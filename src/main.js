@@ -77,3 +77,37 @@ const securityCodePattern = {
   mask: "0000"
 }
 const securityCodeMasked = IMask(securityCode, securityCodePattern)
+
+const addButton = document.querySelector("#add-card")
+addButton.addEventListener("click", () => {
+  alert("Cartão adicionado!")
+})
+
+document.querySelector("form").addEventListener("submit", (event)=> {
+  event.preventDefault()
+})
+
+//NOME DO TITULAR EVENTO
+const cardHolder = document.querySelector("#card-holder")
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value")
+
+  ccHolder.innerText = cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value
+})
+
+//CVC EVENTO
+securityCodeMasked.on("accept", () => {
+  updateSecurityCode(securityCodeMasked.value)
+})
+
+function updateSecurityCode(code){
+  const ccSecurity = document.querySelector(".cc-security .value")
+  ccSecurity.innerText = code.length === 0 ? "123" : code
+}
+
+const numberCard = document.querySelector("#card-number")
+numberCard.addEventListener("input", () => {
+  const ccNumber = document.querySelector(".cc-info .cc-number")
+  ccNumber.innerText = cardNumber.value
+})
+
