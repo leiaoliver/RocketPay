@@ -32,6 +32,11 @@ mask: [
   },
   {
     mask: "0000 0000 0000 0000",
+    regex: /^8\d{0,15}/,
+    cardType: "leia",
+  },
+  {
+    mask: "0000 0000 0000 0000",
     regex: /(^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}/,
     cardType: "mastercard",
   },
@@ -69,7 +74,7 @@ const expirationDatePattern = {
     }
   }
 }
-const expirationCodeMask = IMask(expirationDate, expirationDatePattern)
+const expirationDateMasked = IMask(expirationDate, expirationDatePattern)
 
 //CVC
 const securityCode = document.querySelector("#security-code")
@@ -105,9 +110,24 @@ function updateSecurityCode(code){
   ccSecurity.innerText = code.length === 0 ? "123" : code
 }
 
-const numberCard = document.querySelector("#card-number")
-numberCard.addEventListener("input", () => {
-  const ccNumber = document.querySelector(".cc-info .cc-number")
-  ccNumber.innerText = cardNumber.value
+//CARTÃO
+cardNumberMasked.on("accept", () => {
+  const cardType = cardNumberMasked.masked.currentMask.cardType
+  setCardType(cardType)
+updateCardNumber(cardNumberMasked.value)
 })
 
+function updateCardNumber(number){
+  const ccNumber = document.querySelector(".cc-number")
+  ccNumber.innerText = number.length === 0 ? "1234 5678 9012 3456" : number
+}
+
+//exiration
+expirationDateMasked.on("accept", () => {
+updateExpirationDate(expirationDateMasked.value)
+})
+
+function updateExpirationDate(date){
+  const ccExpiration = document.querySelector(".cc-extra .value")
+  ccExpiration.innerText = date.length === 0 ? "02/32" : date
+}
